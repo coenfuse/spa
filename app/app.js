@@ -3,7 +3,7 @@
 
 // component imports
 import { init_canvas, cb_canvas_update } from './canvas/canvas.js';
-// import { init_editor, cb_editor_update } from './editor/editor.js';
+import { init_editor, cb_editor_update } from './editor/editor.js';
 
 // misc imports
 import { load_dom } from './utils/util.js'
@@ -35,6 +35,9 @@ export async function init_app(parent_dir)
         const canvas_raw = await init_canvas(current_dir);
         c_app.insertAdjacentHTML("afterbegin", canvas_raw)
 
+        const editor_raw = await init_editor(current_dir);
+        c_app.insertAdjacentHTML("beforeend", editor_raw);
+
         return c_app.outerHTML;
     }
     catch (error)
@@ -51,13 +54,12 @@ function start()
     {
         function dom_updater(content, tag)
         {
-            let element = c_app.querySelector(tag);
-            element.innerHTML = content;
-            c_app.innerHTML   = element.outerHTML;
+            c_app.querySelector(tag).innerHTML = content;
             cb_update(c_app.innerHTML, "c_app");
         };
 
         cb_canvas_update(dom_updater);
+        cb_editor_update(dom_updater);
     }
     else {
         console.error("No update callback registered for #app");

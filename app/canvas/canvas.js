@@ -47,7 +47,7 @@ export async function init_canvas(parent_dir)
 
 function start()
 {
-    if (cb_update)
+    if (cb_update != null)
     {
         window.addEventListener("mousemove", async () => {
             let new_dom  = update_canvas();
